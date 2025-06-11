@@ -1,0 +1,16 @@
+.{
+    .name = .libssh2,
+    .version = "1.11.1",
+    .dependencies = .{
+        .mbedtls = .{
+            .url = "https://github.com/EricTianC/zig-mbedtls/releases/download/v2.27.0-3/zig-mbedtls.tar.gz",
+            .hash = "mbedtls-2.27.0-2-qOTF9PKwFLofMzkNL_gRkIB9Zz9xRnCP-D-docG16H",
+        },
+    },
+    .fingerprint = 0x57bdea040e95553a,
+    .paths = .{
+        "libssh2",
+        "build.zig",
+        "build.zig.zon",
+    },
+}

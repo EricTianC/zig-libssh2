@@ -1,0 +1,88 @@
+name: ci
+on:
+  push:
+    branches:
+      - master
+      - main
+      - ci-test
+  pull_request:
+    branches:
+      - master
+      - main
+  schedule:
+    - cron: '0 7 * * *' # Every day at midnight
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [
+          riscv64-linux-gnu,
+          riscv64-linux-musl,
+          aarch64-linux-gnu,
+          aarch64-linux-musl,
+          aarch64-macos,
+          i386-linux-gnu,
+          i386-linux-musl,
+          i386-windows,
+          x86_64-linux-gnu,
+          x86_64-linux-musl,
+          x86_64-macos,
+          x86_64-windows-gnu,
+        ]
+        mode: [
+          Debug,
+          ReleaseSafe,
+          ReleaseFast,
+          ReleaseSmall,
+        ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      # - name: Set up Zig
+      #   uses: mlugg/setup-zig@v2
+      
+      # - name: Build Debug
+      #   if: ${{ matrix.mode == 'debug' }}
+      #   run: zig build -Dtarget=${{ matrix.target }} 
+
+      # - name: Build
+      #   # if: ${{ matrix.mode != 'debug' }}
+      #   run: zig build -Doptimize=${{ matrix.mode }} -Dtarget=${{ matrix.target }} 
+      
+  # test:
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [
+  #         ubuntu-latest,
+  #         windows-latest,
+  #         macos-latest,
+  #       ]
+  #       mode: [
+  #         Debug,
+  #         ReleaseSafe,
+  #         ReleaseFast,
+  #         ReleaseSmall,
+  #       ]
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  #     with:
+  #       submodules: recursive
+  #       fetch-depth: 0
+
+  #   - name: Set up Zig
+  #     uses: mlugg/setup-zig@v2
+
+  #   # - name: Build and Test Debug
+  #   #   if: ${{ matrix.mode == 'debug' }}
+  #   #   run: zig build test
+
+  #   - name: Build and Test
+  #     # if: ${{ matrix.mode != 'debug' }}
+  #     run: zig build test -Doptimize=${{ matrix.mode }}

@@ -1,0 +1,30 @@
+name: Auto Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # 监听以 v 开头的标签推送事件
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码（包含 submodules）
+        uses: actions/checkout@v3
+        with:
+          submodules: true  # 递归拉取 submodules
+
+      - name: Archive Release
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'tar'
+          filename: 'github-release/zig-libssh2.tar.gz'
+          exclusions: '*.git* github-release'
+          command: "mkdir -p github-release"
+
+      - name: 创建 Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: github-release/zig-libssh2.tar.gz
+          token: ${{ secrets.GITHUB_TOKEN }}
