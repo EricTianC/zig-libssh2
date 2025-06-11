@@ -10,6 +10,7 @@
     .fingerprint = 0x57bdea040e95553a,
     .paths = .{
         "libssh2",
+        "config",
         "build.zig",
         "build.zig.zon",
     },
